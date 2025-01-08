@@ -24,7 +24,7 @@ $ unzip apache-tomcat-9.0.98.zip  # 압축 풀기
  -> https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.98/bin/apache-tomcat-9.0.98.tar.gz
 $ cd /opt
 $ sudo wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.98/bin/apache-tomcat-9.0.98.tar.gz  # tar.gz 내려 받기
-$ sudo tar -xvf apache-tomcat-9.0.98.tar.gz  # 압축 풀기 (-x : 압축 풀기,  -v : 처리 과정 화면에 출력, -f : tar 아카이브 파일 기본 옵션)
+$ sudo tar -xzvf apache-tomcat-9.0.98.tar.gz  # 압축 풀기 (-x : 압축 풀기, -z : gz 압축 풀기, -v : 처리 과정 화면에 출력, -f : tar 아카이브 파일 기본 옵션)
 이후 공통 작업)
 apache-tomcat-9.0.98 디렉터리를 소유자가 가지도록 소유권을 변경한다.
 $ sudo chown -R mgt:mgt /opt/apache-tomcat-9.0.98  # /opt/apache-tomcat-9.0.98 디렉터리의(-R : 하위디렉터리 포함) 소유권을 mgt 유저로 변경 (mgt:mgt -> owner:group, 사용자는 기본적으로 자신을 그룹으로 가진다.)
@@ -36,19 +36,24 @@ $ source ~/.profile  # 환경 변수 적용
 $ cd ~  # 홈 디렉터리로 이동
 
 3. MySQL 설치하기
-$ apt search mysql  # MySQL 패키지 이름 확인
-$ sudo apt install -y mysql-server  # MySQL 8.0 설치
+$ apt search mysql  # mysql 패키지 이름 확인
+$ sudo apt install -y mysql-server  # mysql 8.0 설치
 $ mysql --version  # 버전 확인
 
 4. 프로젝트 데이터베이스 스크립트 파일(.sql) 실행해서 DB 구축하기
 $ sudo mysql -u root -p  # mysql 실행하고 root 계정으로 접속하기 (비번 물어보면 root 입력)
 mysql> CREATE USER 'greenit'@'%' IDENTIFIED BY 'greenit';  # greenit/greenit 계정 생성
+######
+  혹시 아이디와 같은 비번 생성 시 ERROR 1819 발생하면 show variables like 'validate_password%'; 통해 비밀번호 생성 규칙 확인하고 아래와 같이 규칙을 완화하기
+  mysql> SET GLOBAL validate_password.policy=LOW;  
+  mysql> SET GLOBAL validate_password.check_user_name=OFF;  비밀번호에 계정이름 사용 가능
+  mysql> SET GLOBAL validate_password.length=5;  비밀번호 최소 5자 이상
+#####
 mysql> GRANT ALL PRIVILEGES ON *.* TO 'greenit'@'%';  # 권한 부여
 mysql> exit
 (호스트에서 Powershell 실행하고 작업 수행)
 $ cd <.sql 파일이 저장된 디렉터리>
-$ scp data.sql <사용자계정>@192.168.56.1:~  # 호스트에 있는 data.sql 파일을 게스트(서버)의 홈 디렉터리로 이동 (MobaXterm의 경우 
-SSH Browser에서 드래그로 해결 가능)
+$ scp data.sql <사용자계정>@192.168.56.1:~  # 호스트에 있는 data.sql 파일을 게스트(서버)의 홈 디렉터리로 이동 (MobaXterm의 경우 SSH Browser에서 드래그로 해결 가능)
 (MobaXterm으로 다시 서버에 접속하고 작업 수행)
 $ cat ~/data.sql | mysql -u greenit -p  # data.sql 파일을 열고, mysql을 실행하면 해당 스크립트가 자동으로 실행 (비번 물어보면 greenit 입력)
 
