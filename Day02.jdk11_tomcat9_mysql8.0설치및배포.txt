@@ -42,7 +42,7 @@ $ mysql --version  # 버전 확인
 
 4. 프로젝트 데이터베이스 스크립트 파일(.sql) 실행해서 DB 구축하기
 $ sudo mysql -u root -p  # mysql 실행하고 root 계정으로 접속하기 (비번 물어보면 root 입력)
-mysql> CREATE USER 'greenit'@'%' IDENTIFIED BY 'greenit';  # greenit/greenit 계정 생성
+mysql> CREATE USER 'greenit'@'%' IDENTIFIED BY 'greenit';  # greenit/greenit 계정 생성, '%'를 사용하면 외부 접근이 가능한 사용자로 설정함
 ######
   혹시 아이디와 같은 비번 생성 시 ERROR 1819 발생하면 show variables like 'validate_password%'; 통해 비밀번호 생성 규칙 확인하고 아래와 같이 규칙을 완화하기
   mysql> SET GLOBAL validate_password.policy=LOW;  
