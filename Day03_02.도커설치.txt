@@ -1,4 +1,4 @@
-도커 설치하기
+도커 설치하기 (https://lachlandeer.github.io/installation-guide/docker/)
 
 $ sudo apt update
 # 패키지 관리자 업데이트
