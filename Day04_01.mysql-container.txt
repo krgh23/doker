@@ -38,7 +38,7 @@ $ docker run -d \
 -e MYSQL_ROOT_PASSWORD=root \
 -e MYSQL_USER=greenit \
 -e MYSQL_PASSWORD=greenit \
--e TZ=Asia/Seoul 
+-e TZ=Asia/Seoul \
 mysql:8.0
 
 ### 컨테이너 동작 확인
@@ -124,7 +124,7 @@ $ docker run -d \
 -e MYSQL_ROOT_PASSWORD=root \
 -e MYSQL_USER=greenit \
 -e MYSQL_PASSWORD=greenit \
--e TZ=Asia/Seoul 
+-e TZ=Asia/Seoul \
 mysql:8.0
 
 ### 컨테이너 동작 확인
