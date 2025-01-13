@@ -13,6 +13,9 @@ ENV MYSQL_USER=greenit
 ENV MYSQL_PASSWORD=$USER_PASSWORD
 ENV TZ=Asia/Seoul
 
+# mysql 포트 열기
+EXPOSE 3306
+
 # 패키지 관리자 업데이트
 RUN apt update
 
@@ -20,7 +23,7 @@ RUN apt update
 RUN apt install -y wget unzip
 
 # /home/mysql 디렉터리에 스크립트 압축 파일 내려 받기
-RUN wget --no-check-certificate https://download.blog.naver.com/open/f267ee5a467978cce3066654658af98f217c80db/HvuZCjGCkiI7uI7SM9B1SzMtOVTTrF59QdfDNKvKOSwfa8pH33KpF8-52tTUANnweydtqlKYK0ohQnTw4aCPNQ/data.zip -P /home/mysql
+RUN wget --no-check-certificate https://download.blog.naver.com/open/f267ee5a467978cce3066654658af98f217c80db/HvuZCjGCkiI7uI7SM9B1SzMtOVTTrF59QdfDNKvKOSwfa8pH33KpF8-52tTUANnweydtqlKYK0ohQnTw4aCPNQ/data.zip -P $WORK_DIR
 
 # 작업 디렉터리 설정
 WORKDIR $WORK_DIR
@@ -35,6 +38,7 @@ RUN unzip $WORK_DIR/data.zip
 # /home/mgt 디렉터리에 init-db.sh 스크립트 파일을 만들고 /docker-entrypoint-initdb.d 디렉터리에 복사
 # init-db.sh 파일이 /home/mysql/data.sql 파일을 실행하는 셸 스크립트 코드를 가짐
 # COPY <host경로> <container경로>
+# host경로를 /home/mgt/init-db.sh 작성하면 경로 인식 문제가 발생하여 파일명만 작성
 COPY init-db.sh /docker-entrypoint-initdb.d
 
 # 실행할 명령어

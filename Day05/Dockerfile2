@@ -18,10 +18,10 @@ RUN apt install -y wget
 
 # 함께 설치 : RUN apt install -y openjdk-11-jdk wget
 
-# tomcat 9.0 다운로드
+# tomcat 9.0 다운로드 (/home/tomcat 에 다운로드하기)
 RUN wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.98/bin/apache-tomcat-9.0.98.tar.gz -P /home/tomcat
 
-# 압축 풀기
+# 압축 풀기 (/home/tomcat 에 압축풀기)
 RUN tar -xzvf /home/tomcat/apache-tomcat-9.0.98.tar.gz -C /home/tomcat
 
 # openjdk-11-jdk 환경 변수 설정

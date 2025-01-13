@@ -11,7 +11,7 @@ ENV MYSQL_PASSWORD=greenit
 EXPOSE 3306
 
 # 이미지 빌드 명령
-# docker build -t mysql-image:8.0 .
+# docker build -t mysql-image:8.0 -f Dockerfile1 .
 #
 # 컨테이너 실행 명령
 # docker run -d --name mysql-container -p 3306:3306 mysql-image:8.0
