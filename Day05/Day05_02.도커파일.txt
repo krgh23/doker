@@ -88,7 +88,7 @@ $ docker exec -it ubuntu-container bash
 
 
 
-실습3) Dockerfile3 (mysql:8.0 이미지로 data.sql 스크립트 파일을 다운로드 받아 실행한 <계정명>/mysql-image:8.0 이미지 만들기)
+(실습3) Dockerfile3 (mysql:8.0 이미지로 data.sql 스크립트 파일을 다운로드 받아 실행한 <계정명>/mysql-image:8.0 이미지 만들기)
 1. 홈 디렉터리에 Dockerfile3 만들기
 $ vi Dockerfile3
 -----
@@ -180,3 +180,50 @@ mysql> exit
 /home/mysql# mysql -u greenit -p
 mysql> USE db_myapp;
 mysql> DESC tbl_user;
+
+
+
+(실습4) (openjdk:11 이미지로 스프링 MVC 프로젝트를 빌드하고, tomcat:9 이미지로 배포하는 <계정명>/myapp-image:1.0 이미지 만들기)
+1. git 설치
+$ sudo apt install -y git
+2. 호스트에 github에 있는 스프링 MVC 프로젝트 복제하기
+$ git clone https://github.com/teacher-min/myapp.git
+3. 스프링 MVC 프로젝트로 이동
+$ cd myapp
+4. Dockerfile4 만들기
+$ vi Dockerfile4
+-----
+# 베이스 이미지 (첫 번째 컨테이너에 별명 base1 지정)
+FROM openjdk:11 as base1
+# 작업 디렉터리
+WORKDIR /
+# 호스트의 myapp 프로젝트 -> 컨테이너에 복사
+# COPY <host> <container>
+# 첫 번째 . 은 현재 디렉터리 즉 스프링 MVC 프로젝트 디렉터리를 의미함
+# 두 번째 . 은 컨테이너 내부의 WORKDIR 즉 루트 디렉터리를 의미함
+COPY . .
+# 패키지 관리 도구 업데이트
+RUN apt update
+# maven 설치
+RUN apt install -y maven
+# 빌드
+RUN mvn clean package
+# 베이스 이미지
+FROM tomcat:9
+# 작업 디렉터리
+WORKDIR webapps
+# 8080 포트 열기
+EXPOSE 8080
+# 빌드 결과 배포하기
+# 빌드 결과는 openjdk:11 베이스 이미지를 이용해 생성한 컨테이너에 존재함
+# 다른 베이스 이미지의 데이터를 가져올 때는 as 와 --from 옵션을 사용함
+COPY --from=base1 /target/*.war .
+-----
+5. 도커 이미지 빌드 및 확인
+$ docker image build -t minkt78/myapp-image:1.0 -f Dockerfile4 .
+$ docker images
+6. 도커 컨테이너 실행 및 확인
+$ docker run -d --name myapp-container --restart=always -p 8080:8080 minkt78/myapp-image:1.0
+$ docker ps
+7. 배포 확인
+http://192.168.56.1:8080/myapp
