@@ -1,7 +1,7 @@
 AWS 로그인
-1. root 사용자로 접속
-2. 아이디/비밀번호 입력
-3. 멀티팩터인증(MFA) 등록
+1. root 사용자로 접속합니다.
+2. 아이디/비밀번호 입력합니다.
+3. 멀티팩터인증(MFA) 등록합니다.
   1) 스마트폰에 Google Authenticator 앱 설치
   2) AWS 화면에서 Authenticator app 선택 후 Next
   3) AWS 화면에서 Show QR code 클릭 후
@@ -13,7 +13,7 @@ AWS 보안 그룹
 1. 일종의 방화벽입니다. 인스턴스에 접속 가능한 IP와 포트를 설정할 수 있습니다.
 2. 보안 그룹 설정
   1) 인바운드 규칙
-    (1) SSH    : my ip, 22      - 내 자리에서만 접속할 수 있다.
+    (1) SSH    : my ip, 22      - 내 자리에서만 접속할 수 있습니다.
     (2) MySQL  : anywhere, 3306
     (3) HTTP   : anywhere, 80
     (4) HTTPS  : anywhere, 443
