@@ -1,0 +1,23 @@
+services:
+  backend:
+    container_name: backend-container
+    build:
+      context: ./backend
+      args:
+        - SPRING_API_KEY=${SPRING_API_KEY}
+    ports:
+      - "8080:8080"
+#    environment:
+#      SPRING_API_KEY: ${SPRING_API_KEY}
+  frontend:
+    container_name: front-container
+    build: 
+      context: ./frontend
+      args:
+        - REACT_APP_API_KEY=${REACT_APP_API_KEY}  # from boot_react_app/.env
+    ports:
+      - "80:80"
+    environment:
+      WAIT_HOSTS: backend:8080
+    depends_on:
+      - backend
