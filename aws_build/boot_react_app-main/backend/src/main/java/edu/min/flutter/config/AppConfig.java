@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 @Configuration
 public class AppConfig {
 
+  // application.properties 파일의 프로퍼티는 읽는 Environment 이스턴스 
   private final Environment env;
   
   @Bean
